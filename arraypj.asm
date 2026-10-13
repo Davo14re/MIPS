@@ -57,7 +57,7 @@ menu:
 	beq $v0, 2, media
 	beq $v0, 3, mediana
 	beq $v0, 4, stampa_array
-	beq $v0, 5, max_numero
+	beq $v0, 5, max_numero_controller
 	beq $v0, 6, min_numero_controller
 	beq $v0, 7, deviazione_standard
 	beq $v0, 8, numeri_primi
@@ -197,7 +197,9 @@ stampa_array:
 	
 #--------------------#
 
-
+max_numero_controller:
+	lw $t4, 0 ($t1)
+	j max_numero
 
 max_numero: 
 	beq $t2, $s2, stampa_max_min
