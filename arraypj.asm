@@ -33,13 +33,14 @@ main:
 	j menu
 	
 menu:
+#----opzione richiesta all'utente----#
 	la $a0, str_menu 
 	li $v0, 4
 	syscall
 	
 	li $v0, 5
 	syscall
-	
+#-----variabili-----#
 	li $t0, 0 #contatore
 	li $t2, 0 
 	li $t1, 0
@@ -57,10 +58,12 @@ menu:
 	beq $v0, 3, mediana
 	beq $v0, 4, stampa_array
 	beq $v0, 5, max_numero
-	beq $v0, 6, min_numero
+	beq $v0, 6, min_numero_controller
 	beq $v0, 7, deviazione_standard
 	beq $v0, 8, numeri_primi
 	
+	blt $v0, 0, menu	#controllo che la voce inserita sia un numero valido, ovvero da 0 a 8
+	bgt $v0, 8, menu	
 #--------------------#
 
 esci: 
@@ -197,7 +200,7 @@ stampa_array:
 
 
 max_numero: 
-	bgt $t2, $s2, stampa_max_min
+	beq $t2, $s2, stampa_max_min
 	lw $t5, 0($t1)
 	bgt $t5, $t4, scambio_max
 	addiu $t1, $t1, 4
@@ -210,13 +213,16 @@ scambio_max:
 	addiu $t2, $t2, 1 
 	j max_numero
 
+min_numero_controller:
+	lw $t4, 0($t1)
+	j min_numero
 
 min_numero: 
-	bgt $t2, $s2, stampa_max_min
+	beq $t2, $s2, stampa_max_min
 	lw $t5, 0($t1)
-	blt $t5, $t4, scambio_min
+	ble $t5, $t4, scambio_min
 	addiu $t1, $t1, 4
-	addiu $t2, $t2, 1 #incremento il contatore, per scorrere i vari elementi dell'array
+	addiu $t2, $t2, 1 		#incremento il contatore, per scorrere i vari elementi dell'array
 	j min_numero
 	
 scambio_min:
